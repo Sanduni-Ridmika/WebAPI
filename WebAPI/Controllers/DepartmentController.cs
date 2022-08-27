@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using WebAPI.Model;
 
 namespace WebAPI.Controllers
 {
@@ -26,7 +27,8 @@ namespace WebAPI.Controllers
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             
             SqlDataReader myReader;
-            using(SqlConnection myCon=new SqlConnection(sqlDataSource))
+            //error get method doesn't work
+            using (SqlConnection myCon=new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
@@ -40,6 +42,90 @@ namespace WebAPI.Controllers
             }
             return new JsonResult(table);
 
+        }
+        [HttpPost]
+        public JsonResult Post(Department dep)
+        {
+            string query = @"
+                    insert into dbo.Department values
+                    ('"+dep.DepartmentName+@"')
+                    ";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+
+            SqlDataReader myReader;
+            //error initial catelog not supported
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Added Successfully");
+        }
+
+        [HttpPut]
+        public JsonResult Put(Department dep)
+        {
+            string query = @"
+                    update dbo.Department set
+                    DepartmentName = '" +dep.DepartmentName+@"'
+                    where DepartmentId = "+dep.DepartmentId + @"
+                    ";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+
+            SqlDataReader myReader;
+            //error initial catelog not supported
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Updated Successfully");
+        }
+
+        [HttpDelete("{id}")]
+        public JsonResult Delete(int id)
+        {
+            string query = @"
+                    delete from dbo.Department
+                    where DepartmentId = " + id + @"
+                    ";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+
+            SqlDataReader myReader;
+            //error initial catelog not supported
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Deleted Successfully");
         }
     }
 }
