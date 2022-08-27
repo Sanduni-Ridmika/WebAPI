@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using WebAPI.Model;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using System;
 
 namespace WebAPI.Controllers
 {
@@ -12,10 +15,12 @@ namespace WebAPI.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _env;
 
-        public EmployeeController(IConfiguration configuration)
+        public EmployeeController(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
+            _env = env;
         }
 
         [HttpGet]
@@ -140,6 +145,59 @@ namespace WebAPI.Controllers
                 }
             }
             return new JsonResult("Deleted Successfully");
+        }
+
+        [Route("SaveFile")]
+        [HttpPost]
+
+        public JsonResult SaveFile()
+        {
+            try
+            {
+                var httpRequest = Request.Form;
+                var postedFile = httpRequest.Files[0];
+                string filename = postedFile.FileName;
+                var physicalPath = _env.ContentRootPath + "/Photos/" + filename;
+
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+
+                return new JsonResult(filename);
+            }
+
+            catch (Exception)
+            {
+                return new JsonResult("anonymous.png");
+            }
+        }
+
+        [Route("GetAllDepartmentNames")]
+        public JsonResult GetAllDepartmentNames()
+        {
+            string query = @"
+                    select DepartmentName from dbo.Department
+                    ";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+
+            SqlDataReader myReader;
+            //error get method doesn't work
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
         }
     }
 }
