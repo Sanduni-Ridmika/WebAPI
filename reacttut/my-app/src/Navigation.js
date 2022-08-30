@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 import {Navbar,Nav} from 'react-bootstrap';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 
-export class Home extends Component{
+export class Navigation extends Component{
 
     render(){
         return(

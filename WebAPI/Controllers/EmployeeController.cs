@@ -169,7 +169,7 @@ namespace WebAPI.Controllers
 
             catch (Exception)
             {
-                return new JsonResult("anonymous.png");
+                return new JsonResult("harrypotter.jpg");
             }
         }
 
