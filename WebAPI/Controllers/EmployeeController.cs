@@ -38,6 +38,7 @@ namespace WebAPI.Controllers
 
             SqlDataReader myReader;
             //error get method doesn't work
+            //fixed errors
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
