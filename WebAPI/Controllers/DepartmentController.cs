@@ -19,6 +19,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        //get method error is fixed
         public JsonResult Get()
         {
             string query = @"
