@@ -74,6 +74,7 @@ namespace WebAPI.Controllers
 
             SqlDataReader myReader;
             //error initial catelog not supported
+            // add 'TrustServerCertificate=True' to your connection string
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
@@ -105,6 +106,7 @@ namespace WebAPI.Controllers
 
             SqlDataReader myReader;
             //error initial catelog not supported
+            // add 'TrustServerCertificate=True' to your connection string
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
@@ -133,6 +135,7 @@ namespace WebAPI.Controllers
 
             SqlDataReader myReader;
             //error initial catelog not supported
+            // add 'TrustServerCertificate=True' to your connection string
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
@@ -185,7 +188,6 @@ namespace WebAPI.Controllers
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
 
             SqlDataReader myReader;
-            //error get method doesn't work
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
