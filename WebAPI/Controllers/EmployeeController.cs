@@ -134,6 +134,7 @@ namespace WebAPI.Controllers
 
             SqlDataReader myReader;
             //error initial catelog not supported
+            // add 'TrustServerCertificate=True' to your connection string
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
