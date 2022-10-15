@@ -37,7 +37,6 @@ namespace WebAPI.Controllers
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
 
             SqlDataReader myReader;
-            //error get method doesn't work
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
@@ -187,7 +186,6 @@ namespace WebAPI.Controllers
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
 
             SqlDataReader myReader;
-            //error get method doesn't work
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
