@@ -1,2 +1,1 @@
-# hacktoberfest
-# hacktoberfest-2023
+Test project to learn React
